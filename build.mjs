@@ -129,6 +129,7 @@ ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld).replace(
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<div class="read-progress" aria-hidden="true"><span></span></div>
 <header class="top">
 	<div class="wrap top-in">
 		<a class="brand" href="/"><span class="logo" aria-hidden="true">AI</span><span><b>AI Explained</b><small>by ${esc(site.author)}</small></span></a>
@@ -211,14 +212,15 @@ function articlePage(a) {
 			<h1>${esc(a.title)}</h1>
 			<p class="lede">${esc(a.description)}</p>
 			<p class="meta"><span>${esc(site.author)}</span><span>${fmtDate(a.date)}</span><span>${minutes(a.body)} min read</span></p>
-			<div class="video-mobile"></div>
-			${toc.length > 2 ? `<details class="toc" open><summary>On this page</summary><ol>${toc.map((h) => `<li><a href="#${slugify(h)}">${esc(h.replace(/`/g, ''))}</a></li>`).join('')}</ol></details>` : ''}
+			<div class="video-mobile"><button type="button" class="watch-compact" aria-label="Play the 2-minute video"><span class="wc-thumb"><img src="${thumb(a.youtube)}" alt="" loading="lazy" width="480" height="360"><span class="play" aria-hidden="true"></span></span><span class="wc-text"><b>Watch the 2-minute video</b><small>Tap to play here</small></span></button></div>
+			${toc.length > 2 ? `<details class="toc"><summary>On this page</summary><ol>${toc.map((h) => `<li><a href="#${slugify(h)}">${esc(h.replace(/`/g, ''))}</a></li>`).join('')}</ol></details>` : ''}
 			<div class="prose">
 ${html}
 			</div>
 			${a.tags.length ? `<p class="tags">${a.tags.map((t) => `<a href="/?q=${encodeURIComponent(t)}#topics">#${esc(t)}</a>`).join('')}</p>` : ''}
 			${prev || next ? `<nav class="pager" aria-label="Episodes">${prev ? `<a class="prev" href="/${prev.slug}/"><small>${icon.back} Episode ${pad(prev.episode)}</small><span>${esc(prev.title)}</span></a>` : '<span></span>'}${next ? `<a class="next" href="/${next.slug}/"><small>Episode ${pad(next.episode)} ${icon.arrow}</small><span>${esc(next.title)}</span></a>` : ''}</nav>` : ''}
 		</div>
+		<a class="fab-watch" href="#video" aria-label="Watch the video"><span class="play-sm" aria-hidden="true"></span>Watch</a>
 		<aside class="article-side">
 			<div class="video-card" id="video">
 				<div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/${a.youtube}?rel=0&amp;modestbranding=1" title="${esc(a.title)}: the 2-minute video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
@@ -245,12 +247,13 @@ function homePage() {
 	<div class="wrap hero-in">
 		<div>
 			<p class="eyebrow">AI for software engineers</p>
-			<h1>Big AI ideas,<br><span class="grad">explained in two minutes.</span></h1>
+			<h1>Big AI ideas,<br> <span class="grad">explained in two minutes.</span></h1>
 			<p class="hero-text">${esc(site.description)}</p>
 			<div class="hero-cta">
 				<a class="btn primary" href="#topics">Browse ${articles.length} topics</a>
-				<a class="btn" href="/mcp-a-to-z/">Start MCP from A to Z</a>
+				<a class="btn" href="/mcp-a-to-z/">MCP from A to Z</a>
 			</div>
+			<a class="latest-mobile" href="/${latest.slug}/"><span class="lm-thumb"><img src="${thumb(latest.youtube)}" alt="" loading="lazy" width="480" height="360"><span class="play" aria-hidden="true"></span></span><span><small>Latest video</small><b>${esc(latest.title)}</b></span></a>
 			<ul class="stats">
 				<li><b>${articles.length}</b><span>explainers</span></li>
 				<li><b>${counts['mcp-a-to-z']}/${SERIES['mcp-a-to-z'].episodes}</b><span>MCP episodes</span></li>

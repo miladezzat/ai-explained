@@ -9,16 +9,52 @@
 		try { localStorage.setItem('theme', next); } catch (e) {}
 	});
 
-	// Phones: show the video right under the title instead of in the side column.
+	// Phones: a compact "Watch" row under the title opens the video in place (saves data and space);
+	// wider screens keep it in the side column.
 	const slot = document.querySelector('.video-mobile');
 	const card = document.querySelector('.video-card');
 	const side = document.querySelector('.article-side');
+	const mq = matchMedia('(max-width: 960px)');
+	const openVideo = () => {
+		if (!slot || slot.classList.contains('open')) return;
+		slot.classList.add('open');
+		const f = card.querySelector('iframe');
+		if (f && !f.src.includes('autoplay=1')) f.src += '&autoplay=1';
+	};
 	if (slot && card && side) {
-		const mq = matchMedia('(max-width: 960px)');
 		const place = () => (mq.matches ? slot : side).appendChild(card);
 		place();
 		mq.addEventListener('change', place);
+		slot.querySelector('.watch-compact')?.addEventListener('click', openVideo);
 	}
+
+	// Contents list starts open on wide screens, closed on phones.
+	const toc = document.querySelector('.toc');
+	if (toc && !mq.matches) toc.open = true;
+
+	// Reading progress bar, and a floating Watch button once the video is scrolled out of view.
+	const bar = document.querySelector('.read-progress span');
+	const article = document.querySelector('.article .prose');
+	const fab = document.querySelector('.fab-watch');
+	if (bar && article) {
+		const onScroll = () => {
+			const r = article.getBoundingClientRect();
+			const total = r.height - innerHeight * 0.6;
+			bar.style.width = `${Math.min(100, Math.max(0, (-r.top / Math.max(total, 1)) * 100))}%`;
+			if (fab && slot) {
+				const s = slot.getBoundingClientRect();
+				fab.classList.toggle('show', s.bottom < 0 && r.bottom > innerHeight * 0.5);
+			}
+		};
+		addEventListener('scroll', onScroll, {passive: true});
+		onScroll();
+	}
+	fab?.addEventListener('click', (e) => {
+		if (!mq.matches) return;
+		e.preventDefault();
+		openVideo();
+		slot.scrollIntoView({behavior: 'smooth', block: 'center'});
+	});
 
 	// Topic grid: filter chips + search, kept in the URL (?q=…&s=…).
 	const grid = document.getElementById('grid');
