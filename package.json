@@ -1,0 +1,14 @@
+{
+  "name": "ai-explained",
+  "private": true,
+  "type": "module",
+  "description": "ai.miladezzat.com: written explainers for every AI Explained video",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs check",
+    "serve": "node build.mjs && npx --yes serve dist -l 4321"
+  },
+  "dependencies": {
+    "marked": "^14.1.4"
+  }
+}

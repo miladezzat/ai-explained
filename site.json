@@ -1,0 +1,16 @@
+{
+	"title": "AI Explained",
+	"url": "https://ai.miladezzat.com",
+	"author": "Milad Fahmy",
+	"description": "Short, clear explainers on how modern AI works, written by a software engineer for software engineers. Every topic comes with a 2-minute video and a page you can read, save and share.",
+	"social": {
+		"youtube": "https://youtube.com/@miladfahmyai",
+		"facebook": "https://facebook.com/1352235447979055",
+		"instagram": "https://instagram.com/miladezzat12",
+		"github": "https://github.com/miladezzat"
+	},
+	"series": {
+		"ai-explained": {"name": "AI Explained", "short": "AI Explained"},
+		"mcp-a-to-z": {"name": "MCP from A to Z", "short": "MCP A to Z", "episodes": 90, "description": "Learn the Model Context Protocol from zero to shipping your own server: 90 short episodes in order, from the basics to building servers and clients, OAuth, security, deployment and the ecosystem. Follows the 2026-07-28 MCP spec."}
+	}
+}
